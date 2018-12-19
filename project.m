@@ -67,6 +67,8 @@ imshow(gh2013n);
 figure('name', 'Greenhouses difference norm')
 imshow(gh2018n-gh2013n);
 
+%%salut c david
+
 
 
 
