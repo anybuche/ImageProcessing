@@ -86,30 +86,19 @@ ylabel('y')
 % low pass (gaussian)
 sigma = 2;
 low_pass = fspecial('gaussian', 3, sigma); %3 for example
+
+%filtering
 gh2013n_filtered = imfilter(gh2013n,low_pass);
 gh2018n_filtered = imfilter(gh2018n,low_pass);
 
-%high pass
-sigma = 2;
-high_pass = fspecial('log', 3, sigma); %3 for example
-gh2013n_filtered2 = imfilter(gh2013n,high_pass);
-gh2018n_filtered2 = imfilter(gh2018n,high_pass);
-
-
 figure
-subplot(311)
+subplot(121)
 imshow(gh2013n_filtered)
 axis equal tight
 xlabel('easting [m]')
 ylabel('northing [m]')
 title('Low pass 2013')
-subplot(312)
-imshow(gh2013n_filtered2)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('High pass 2013')
-subplot(313)
+subplot(122)
 imshow(gh2013n)
 axis equal tight
 xlabel('easting [m]')
@@ -117,24 +106,18 @@ ylabel('northing [m]')
 title('Not filtered 2013')
 
 figure
-subplot(311)
+subplot(121)
 imshow(gh2018n_filtered)
 axis equal tight
 xlabel('easting [m]')
 ylabel('northing [m]')
 title('Low pass 2018')
-subplot(312)
-imshow(gh2018n_filtered2)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('High pass 2018')
-subplot(313)
+subplot(121)
 imshow(gh2018n)
 axis equal tight
 xlabel('easting [m]')
 ylabel('northing [m]')
-title('Not filtered 2018')
+title(Not filtered 2018')
 
 
 
