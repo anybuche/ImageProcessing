@@ -30,6 +30,7 @@ figure('name', 'Greenhouses difference norm')
 imshow(gh2018n-gh2013n);
 
 %% Kmeans algorithm
+close all
 k = 4; %4 clusters
 n_iter = 2;
 
@@ -79,7 +80,7 @@ ylabel('y')
 
 % WORKS MUCH BETTER ON NORMALIZED PICTURES
 
-%% Opening/closing and different filters
+%% Different filters
 
 %trying low pass and high pass on gh2018n-gh2013n
 
@@ -135,6 +136,78 @@ axis equal tight
 xlabel('easting [m]')
 ylabel('northing [m]')
 title('Not filtered 2018')
+
+% TODO: essayer d'autres filtres matriciels avec fspecial3
+
+%% Test de filtres
+
+filter_average = [1 1 1;1 1 1;1 1 1];
+filter_low_pass= [1 2 1;2 4 2;1 2 1];
+filter_laplacian= [-1 -1 -1;-1 8 -1; -1 -1 -1];
+reinforcement = [0 0 0;0 1 0; 0 0 0];
+sobel_vert = [-1 0 1;-2 0 2;-1 0 1];
+sobel_hor = [1 2 1; 0 0 0; -1 -2 -1];
+
+open1 = imfilter(gh2013n, filter_average);
+open2= imfilter(gh2013n, filter_low_pass);
+open3 = imfilter(gh2013n, filter_laplacian);
+
+figure
+subplot(311)
+imshow(open1)
+subplot(312)
+imshow(open2)
+subplot(313)
+imshow(open3)
+ 
+%% Opening closing
+
+SE = strel('disk',5); % 'diamond' 'square'
+
+% Performing Opening
+gh2013n_op = imopen(gh2013n,SE);
+%gh2018n_op = imopen(gh2018n,SE);
+% Performing Closing
+gh2013n_cl = imclose(gh2013n,SE);
+%gh2018n_cl = imclose(gh2018n,SE);
+
+figure
+subplot(1,2,1);
+imshow(gh2013n_op)
+axis equal tight
+xlabel('easting [m]')
+ylabel('northing [m]')
+title('2013 opening');
+
+subplot(1,2,2);
+imshow(gh2013n_cl)
+axis equal tight
+xlabel('easting [m]')
+ylabel('northing [m]')
+title('2013 closing');
+
+% figure
+% subplot(1,2,1);
+% imshow(gh2018n_op)
+% axis equal tight
+% xlabel('easting [m]')
+% ylabel('northing [m]')
+% title('2018 opening');
+% 
+% subplot(1,2,2);
+% imshow(gh2018n_cl)
+% axis equal tight
+% xlabel('easting [m]')
+% ylabel('northing [m]')
+% title('2018 closing');
+
+%%%%%%% essayer avec d'autres types de SE
+
+
+
+
+
+
 
 
 
