@@ -1,0 +1,8 @@
+# MAC
+.DS_Store
+
+#cache files
+cache/
+
+.asv
+

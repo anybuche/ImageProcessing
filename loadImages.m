@@ -6,6 +6,7 @@ function [images] = loadImages()
 
 % read Landsat 8 bands (12 bands, 1 to 9 multispectral 30m, 
 % except 8 panchromatic at 15m, 10&11 TIR bands, 12 QA band)
+% bands description: https://landsat.usgs.gov/what-are-band-designations-landsat-satellites
 filepath{1} = '../Data/2013-10-07, Landsat 8 USGS, B01.tiff';
 filepath{2} = '../Data/2013-10-07, Landsat 8 USGS, B02.tiff';
 filepath{3} = '../Data/2013-10-07, Landsat 8 USGS, B03.tiff';
@@ -41,12 +42,12 @@ for i = 1:8
     images.landsat2018(:,:,i) = im2double(ima1);
 end
 
-% LANDSAT 8 2018 11 06
+% Sentinel-2A L1C 2015 12 03
 
-% read Landsat 8 bands (12 bands, 1 to 9 multispectral 30m, 
+% read Sentinel 8 bands (12 bands, 1 to 9 multispectral 30m, 
 % except 8 panchromatic at 15m, 10&11 TIR bands, 12 QA band)
-
-filepath{1} = '../Data/2018-11-06, Landsat 8 USGS, B01.tiff';
+% bands description: https://en.wikipedia.org/wiki/Sentinel-2
+filepath{1} = '../Data/2015-12-03, Sentinel-2A L1C, B01.tiff';
 filepath{2} = '../Data/2018-11-06, Landsat 8 USGS, B02.tiff';
 filepath{3} = '../Data/2018-11-06, Landsat 8 USGS, B03.tiff';
 filepath{4} = '../Data/2018-11-06, Landsat 8 USGS, B04.tiff';
