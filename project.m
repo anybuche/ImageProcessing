@@ -4,15 +4,21 @@
 
 clc; clear all; close all;
 
+%% Load the images
 images = loadImages();
-
-
  
 %% Bring out the greenhouses
 close all;
 
+% Histogram matching between bands 5 and 7 
+landsat2013_b5 = imhistmatch(images.landsat2013(:,:,5),images.landsat2013(:,:,7));
 gh2013 = images.landsat2013(:,:,5)-images.landsat2013(:,:,7);
+gh2013mn = landsat2013_b5-images.landsat2013(:,:,7);
+
+landsat2018_b5 = imhistmatch(images.landsat2018(:,:,5),images.landsat2018(:,:,7));
 gh2018 = images.landsat2018(:,:,5)-images.landsat2018(:,:,7);
+gh2018mn = landsat2018_b5-images.landsat2018(:,:,7);
+
 gh2018n = (images.landsat2018(:,:,5)-images.landsat2018(:,:,7))./(images.landsat2018(:,:,5)+images.landsat2018(:,:,7));
 gh2013n = (images.landsat2013(:,:,5)-images.landsat2013(:,:,7))./(images.landsat2013(:,:,5)+images.landsat2013(:,:,7));
 
@@ -29,8 +35,18 @@ imshow(gh2013n);
 figure('name', 'Greenhouses difference norm')
 imshow(gh2018n-gh2013n);
 
+gh2013m = imhistmatch(gh2013,gh2018);
+figure('name', 'Greenhouses 2013m')
+imshow(gh2013m)
+figure('name', 'Greenhouses 2013mn')
+imshow(gh2013mn)
+figure('name', 'Greenhouses 2018mn')
+imshow(gh2018mn)
+figure('name', 'Greenhouses difference after') % This one gives the best results ! (Less artifacts)
+imshow(gh2018-gh2013m);
+figure('name', 'Greenhouses difference before')
+imshow(gh2018mn-gh2013mn);
 %% Kmeans algorithm
-close all
 k = 4; %4 clusters
 n_iter = 2;
 
@@ -41,7 +57,7 @@ im2018_reshape = reshape(gh2018,size(gh2018,1)*size(gh2018,2),size(gh2018,3));
 kmeans2013 = k_means(im2013_reshape,k,n_iter);
 kmeans2018 = k_means(im2018_reshape,k,n_iter);
 
-figure
+figure('name', 'kmeans')
 subplot(121);
 imagesc(reshape(kmeans2013,size(gh2013,1),size(gh2013,2)));
 title('k_means 2013');
@@ -63,7 +79,7 @@ im2018n_reshape = reshape(gh2018n,size(gh2018n,1)*size(gh2018n,2),size(gh2018n,3
 kmeans2013 = k_means(im2013n_reshape,k,n_iter);
 kmeans2018 = k_means(im2018n_reshape,k,n_iter);
 
-figure
+figure('name', 'kmeans on normalized indexes')
 subplot(121);
 imagesc(reshape(kmeans2013,size(gh2013n,1),size(gh2013n,2)));
 title('k_means 2013 normalized');
@@ -165,13 +181,13 @@ imshow(open3)
 SE = strel('disk',5); % 'diamond' 'square'
 
 % Performing Opening
-gh2013n_op = imopen(gh2013n,SE);
+gh2013n_op = imopen(gh2013,SE);
 %gh2018n_op = imopen(gh2018n,SE);
 % Performing Closing
-gh2013n_cl = imclose(gh2013n,SE);
+gh2013n_cl = imclose(gh2013,SE);
 %gh2018n_cl = imclose(gh2018n,SE);
 
-figure
+figure('name', 'Opening and Closing')
 subplot(1,2,1);
 imshow(gh2013n_op)
 axis equal tight
