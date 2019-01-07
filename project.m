@@ -10,15 +10,11 @@ images = loadImages();
 %% Bring out the greenhouses
 close all;
 
-% Histogram matching between bands 5 and 7 
-landsat2013_b5 = imhistmatch(images.landsat2013(:,:,5),images.landsat2013(:,:,7));
+% Subtract the two bands with the most difference
 gh2013 = images.landsat2013(:,:,5)-images.landsat2013(:,:,7);
-gh2013mn = landsat2013_b5-images.landsat2013(:,:,7);
-
-landsat2018_b5 = imhistmatch(images.landsat2018(:,:,5),images.landsat2018(:,:,7));
 gh2018 = images.landsat2018(:,:,5)-images.landsat2018(:,:,7);
-gh2018mn = landsat2018_b5-images.landsat2018(:,:,7);
 
+%Normalized indexes
 gh2018n = (images.landsat2018(:,:,5)-images.landsat2018(:,:,7))./(images.landsat2018(:,:,5)+images.landsat2018(:,:,7));
 gh2013n = (images.landsat2013(:,:,5)-images.landsat2013(:,:,7))./(images.landsat2013(:,:,5)+images.landsat2013(:,:,7));
 
@@ -26,29 +22,53 @@ figure('name', 'Greenhouses 2013')
 imshow(gh2013)
 figure('name', 'Greenhouses 2018')
 imshow(gh2018)
+% Histogram matching for better accuracy
+gh2013m = imhistmatch(gh2013,gh2018);
+landsatDiff = gh2018-gh2013m;
 figure('name', 'Greenhouses difference')
-imshow(gh2018-gh2013);
+imshow(landsatDiff);
+
 figure('name', 'Greenhouses 2018 norm')
 imshow(gh2018n);
 figure('name', 'Greenhouses 2013 norm')
 imshow(gh2013n);
+% Histogram matching for better accuracy
+gh2013nm = imhistmatch(gh2013n,gh2018n);
 figure('name', 'Greenhouses difference norm')
-imshow(gh2018n-gh2013n);
+imshow(gh2018n-gh2013nm);
 
-gh2013m = imhistmatch(gh2013,gh2018);
-figure('name', 'Greenhouses 2013m')
-imshow(gh2013m)
-figure('name', 'Greenhouses 2013mn')
-imshow(gh2013mn)
-figure('name', 'Greenhouses 2018mn')
-imshow(gh2018mn)
-figure('name', 'Greenhouses difference after') % This one gives the best results ! (Less artifacts)
-imshow(gh2018-gh2013m);
-figure('name', 'Greenhouses difference before')
-imshow(gh2018mn-gh2013mn);
+%Thresholding
+landsatDiff_uint8 = uint8(landsatDiff*255);
+figure('name', 'Greenhouses difference 8bits')
+imshow(landsatDiff_uint8)
+landsatDiffth = landsatDiff_uint8>70; %This Threshold is to be adjusted
+figure('name', 'Greenhouses difference thresholded')
+imshow(landsatDiffth)
+
+% Removing small artifacts by applying an opening filter
+SE = strel('diamond',2); % 'diamond' 'square' %This size also has to be adjusted
+% Performing Opening
+landsatDiff_op = imopen(landsatDiffth,SE);
+figure('name', 'Greenhouses difference thresholded and openend')
+imshow(landsatDiff_op)
+
+%% Kmeans algorithm
+k = 6; %2 clusters
+n_iter = 100;
+
+%
+landsatDiff_reshape = reshape(landsatDiff,size(landsatDiff,1)*size(landsatDiff,2),size(landsatDiff,3));
+
+kmeansDiff = k_means(landsatDiff_reshape,k,n_iter);
+
+figure('name', 'kmeans')
+imagesc(reshape(kmeansDiff,size(landsatDiff,1),size(landsatDiff,2)));
+title('k_means Diff');
+axis equal tight
+
 %% Kmeans algorithm
 k = 4; %4 clusters
-n_iter = 2;
+n_iter = 4;
 
 % for 2013 and 2018 images
 im2013_reshape = reshape(gh2013,size(gh2013,1)*size(gh2013,2),size(gh2013,3));
