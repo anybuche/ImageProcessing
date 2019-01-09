@@ -75,6 +75,35 @@ imshow(landsatDiff_op)
 figure('name', 'Greenhouses difference thresholded and openend (Sentinel)')
 imshow(sentinelDiff_op)
 
+%% Otsu's Segmentation
+% compute the image histogram using histcounts()  
+[N,edges] = histcounts(landsatDiff_uint8(:),255);
+
+% Otsu's method
+thresh = multithresh(landsatDiff_uint8,1);
+
+% Visualize the image histogram using histogram()   
+figure
+histogram(landsatDiff_uint8(:), edges)
+hold on
+plot([thresh, thresh], [0, max(N)], 'r-') % plot the threshold as a red line on the histogram
+xlabel('value')
+ylabel('count')
+
+
+%% Threshold the image
+% apply the threshold computed using imquantize() function
+Im_otsu = imquantize(landsatDiff_uint8,thresh);
+
+% Visualize segmentation from Otsu
+figure
+image(Im_otsu, 'CDataMapping', 'direct')
+colormap(hsv(7))
+axis equal tight
+title('Otsu''s method')
+xlabel('col')
+ylabel('row')
+
 %% Kmeans algorithm
 k = 6; %2 clusters
 n_iter = 100;
