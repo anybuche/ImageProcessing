@@ -75,34 +75,6 @@ imshow(landsatDiff_op)
 figure('name', 'Greenhouses difference thresholded and openend (Sentinel)')
 imshow(sentinelDiff_op)
 
-%% Otsu's Segmentation
-% compute the image histogram using histcounts()  
-[N,edges] = histcounts(landsatDiff_uint8(:),255);
-
-% Otsu's method
-thresh = multithresh(landsatDiff_uint8,1);
-
-% Visualize the image histogram using histogram()   
-figure
-histogram(landsatDiff_uint8(:), edges)
-hold on
-plot([thresh, thresh], [0, max(N)], 'r-') % plot the threshold as a red line on the histogram
-xlabel('value')
-ylabel('count')
-
-
-%% Threshold the image
-% apply the threshold computed using imquantize() function
-Im_otsu = imquantize(landsatDiff_uint8,thresh);
-
-% Visualize segmentation from Otsu
-figure
-image(Im_otsu, 'CDataMapping', 'direct')
-colormap(hsv(7))
-axis equal tight
-title('Otsu''s method')
-xlabel('col')
-ylabel('row')
 
 %% Kmeans algorithm
 k = 6; %2 clusters
@@ -116,6 +88,20 @@ figure('name', 'kmeans')
 imagesc(reshape(kmeansDiff,size(landsatDiff,1),size(landsatDiff,2)));
 title('k_means Diff');
 axis equal tight
+
+%%
+k = 4; %4 clusters
+n_iter = 30;
+
+im2013_reshape = reshape(images.landsat2013,size(images.landsat2013,1)*size(images.landsat2013,2),size(images.landsat2013,3));
+kmeans2013 = k_means(im2013_reshape,k,n_iter);
+figure('name', 'kmeans')
+imagesc(reshape(kmeans2013,size(images.landsat2013,1),size(images.landsat2013,2)));
+title('k_means 2013 smarter');
+axis equal tight
+xlabel('x')
+ylabel('y')
+
 
 %% Kmeans algorithm
 k = 4; %4 clusters
@@ -166,132 +152,6 @@ xlabel('x')
 ylabel('y')
 
 % WORKS MUCH BETTER ON NORMALIZED PICTURES
-
-%% Different filters
-
-%trying low pass and high pass on gh2018n-gh2013n
-
-% low pass (gaussian)
-sigma = 2;
-low_pass = fspecial('gaussian', 3, sigma); %3 for example
-gh2013n_filtered = imfilter(gh2013n,low_pass);
-gh2018n_filtered = imfilter(gh2018n,low_pass);
-
-%high pass
-sigma = 2;
-high_pass = fspecial('log', 3, sigma); %3 for example
-gh2013n_filtered2 = imfilter(gh2013n,high_pass);
-gh2018n_filtered2 = imfilter(gh2018n,high_pass);
-
-
-figure
-subplot(311)
-imshow(gh2013n_filtered)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('Low pass 2013')
-subplot(312)
-imshow(gh2013n_filtered2)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('High pass 2013')
-subplot(313)
-imshow(gh2013n)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('Not filtered 2013')
-
-figure
-subplot(311)
-imshow(gh2018n_filtered)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('Low pass 2018')
-subplot(312)
-imshow(gh2018n_filtered2)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('High pass 2018')
-subplot(313)
-imshow(gh2018n)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('Not filtered 2018')
-
-% TODO: essayer d'autres filtres matriciels avec fspecial3
-
-%% Test de filtres
-
-filter_average = [1 1 1;1 1 1;1 1 1];
-filter_low_pass= [1 2 1;2 4 2;1 2 1];
-filter_laplacian= [-1 -1 -1;-1 8 -1; -1 -1 -1];
-reinforcement = [0 0 0;0 1 0; 0 0 0];
-sobel_vert = [-1 0 1;-2 0 2;-1 0 1];
-sobel_hor = [1 2 1; 0 0 0; -1 -2 -1];
-
-open1 = imfilter(gh2013n, filter_average);
-open2= imfilter(gh2013n, filter_low_pass);
-open3 = imfilter(gh2013n, filter_laplacian);
-
-figure
-subplot(311)
-imshow(open1)
-subplot(312)
-imshow(open2)
-subplot(313)
-imshow(open3)
- 
-%% Opening closing
-
-SE = strel('disk',5); % 'diamond' 'square'
-
-% Performing Opening
-gh2013n_op = imopen(gh2013,SE);
-%gh2018n_op = imopen(gh2018n,SE);
-% Performing Closing
-gh2013n_cl = imclose(gh2013,SE);
-%gh2018n_cl = imclose(gh2018n,SE);
-
-figure('name', 'Opening and Closing')
-subplot(1,2,1);
-imshow(gh2013n_op)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('2013 opening');
-
-subplot(1,2,2);
-imshow(gh2013n_cl)
-axis equal tight
-xlabel('easting [m]')
-ylabel('northing [m]')
-title('2013 closing');
-
-% figure
-% subplot(1,2,1);
-% imshow(gh2018n_op)
-% axis equal tight
-% xlabel('easting [m]')
-% ylabel('northing [m]')
-% title('2018 opening');
-% 
-% subplot(1,2,2);
-% imshow(gh2018n_cl)
-% axis equal tight
-% xlabel('easting [m]')
-% ylabel('northing [m]')
-% title('2018 closing');
-
-%%%%%%% essayer avec d'autres types de SE
-
-
-
 
 
 
