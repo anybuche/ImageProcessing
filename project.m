@@ -129,30 +129,6 @@ axis equal tight
 xlabel('x')
 ylabel('y')
 
-%for nomalized images
-im2013n_reshape = reshape(gh2013n,size(gh2013n,1)*size(gh2013n,2),size(gh2013n,3));
-im2018n_reshape = reshape(gh2018n,size(gh2018n,1)*size(gh2018n,2),size(gh2018n,3));
-
-kmeans2013 = k_means(im2013n_reshape,k,n_iter);
-kmeans2018 = k_means(im2018n_reshape,k,n_iter);
-
-figure('name', 'kmeans on normalized indexes')
-subplot(121);
-imagesc(reshape(kmeans2013,size(gh2013n,1),size(gh2013n,2)));
-title('k_means 2013 normalized');
-axis equal tight
-xlabel('x')
-ylabel('y')
-
-subplot(122);
-imagesc(reshape(kmeans2018,size(gh2018n,1),size(gh2018n,2)));
-title('k_means 2018 normalized');
-axis equal tight
-xlabel('x')
-ylabel('y')
-
-% WORKS MUCH BETTER ON NORMALIZED PICTURES
-
 
 
 
