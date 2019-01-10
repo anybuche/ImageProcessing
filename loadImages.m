@@ -1,5 +1,5 @@
 function [images] = loadImages()
-% Load all images bands and store them inside "images"
+% Load all images and all bands and store them inside "images"
 
 %% Bigger images
 

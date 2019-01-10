@@ -57,7 +57,7 @@ imshow(gh2018n)
 % From all these images, we decide to keep only the small ones, from
 % Landsat 8
 
-%% Histogram matching for better accuracy
+%% Histogram matching for better accuracy and subtraction between years
 
 % 2013-2018
 gh2013m = imhistmatch(gh2013,gh2018);
@@ -101,7 +101,7 @@ imshow(landsatDiff1518th)
 
 SE = strel('diamond',1); %This size and shape also can be adjusted
 
-% Performing Opening, 2013-2018
+% Performing opening, 2013-2018
 landsatDiff1318_op = imopen(landsatDiff1318th,SE);
 figure('name', 'Greenhouses difference thresholded and openend, 13-18')
 imshow(landsatDiff1318_op)
@@ -142,11 +142,11 @@ fprintf(['Number of new greenhouses hectares between 2013 and 2018: %.0f,\n',...
 
 %% Kmeans algorithm on the difference between years
 
-k = 3; %2 clusters
+k = 3; %3 clusters
 n_iter = 20;
 
 landsatDiff_reshape = reshape(landsatDiff1318,size(landsatDiff1318,1)...
-                    *size(landsatDiff1318,2),size(landsatDiff1318,3));
+                      *size(landsatDiff1318,2),size(landsatDiff1318,3));
 
 kmeansDiff = k_means(landsatDiff_reshape,k,n_iter);
 
@@ -157,10 +157,11 @@ axis equal tight
 
 %% Kmeans algorithm on the 2013 full image (8 bands)
 
-k = 5; %4 clusters
+k = 5; %5 clusters
 n_iter = 20;
 
-im2013_reshape = reshape(images.landsat2013,size(images.landsat2013,1)*size(images.landsat2013,2),size(images.landsat2013,3));
+im2013_reshape = reshape(images.landsat2013,size(images.landsat2013,1)...
+                 *size(images.landsat2013,2),size(images.landsat2013,3));
 kmeans2013_all = k_means(im2013_reshape,k,n_iter);
 figure('name', 'kmeans, all bands')
 imagesc(reshape(kmeans2013_all,size(images.landsat2013,1),size(images.landsat2013,2)));
@@ -172,7 +173,7 @@ ylabel('y')
 
 %% Kmeans algorithm on the difference between bands, both in 2013 and 2018
 
-k = 3; %4 clusters
+k = 3; %3 clusters
 n_iter = 20;
 
 % for 2013 and 2018 images
