@@ -1,3 +1,7 @@
+% Function loadImages
+% Version: December 10th, 2018
+% Author(s): Anael Buchegger, David Sanchez del Rio
+
 function [images] = loadImages()
 % Load all images and all bands and store them inside "images"
 
