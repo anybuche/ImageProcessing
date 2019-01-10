@@ -71,6 +71,18 @@ landsatDiff1518 = gh2018-gh2015m;
 figure('name', 'Greenhouses difference 2015-2018')
 imshow(landsatDiff1518);
 
+%% (Matching illustration)
+figure('name', 'Matching illustration')
+subplot(131)
+imshow(gh2015)
+title('Greenhouses 2015');
+subplot(132)
+imshow(gh2015m)
+title('Greenhouses 2015, matched');
+subplot(133)
+imshow(gh2018)
+title('Greenhouses 2018');
+
 %% Thresholding
 
 % 2013-2018
@@ -99,17 +111,34 @@ landsatDiff1518_op = imopen(landsatDiff1518th,SE);
 figure('name', 'Greenhouses difference thresholded and openend, 15-18')
 imshow(landsatDiff1518_op)
 
+%% (Change illustration)
+figure('name', 'Change illustration')
+subplot(221)
+imshow(gh2013)
+title('2013');
+subplot(222)
+imshow(gh2018)
+title('2018');
+subplot(223)
+imshow(landsatDiff1318)
+title('2018-2013');
+subplot(224)
+imshow(landsatDiff1318_op)
+title('Extracted difference');
+
 %% Estimate the number of new greenhouses
 
+% Counting white pixels
 n1318 = sum(sum(landsatDiff1318_op));
 n1518 = sum(sum(landsatDiff1518_op));
 
+% Area calculation, in hectares
 A1318 = n1318*30*30/(100*100); %30x30m per pixel, given in hectares (100x100m)
 A1518 = n1518*30*30/(100*100);
 
 A_tot = size(landsatDiff1318,1)*size(landsatDiff1318,2)*30*30/(100*100);
-fprintf(['Number of new greenhouses hectares between 2013 and 2018: %.2f,\n',...
-         'between 2015 and 2018: %.2f,\nover %.2f total hectares\n'], A1318, A1518, A_tot)
+fprintf(['Number of new greenhouses hectares between 2013 and 2018: %.0f,\n',...
+         'between 2015 and 2018: %.0f,\nover %.0f total hectares\n'], A1318, A1518, A_tot)
 
 %% Kmeans algorithm on the difference between years
 
@@ -132,9 +161,9 @@ k = 5; %4 clusters
 n_iter = 20;
 
 im2013_reshape = reshape(images.landsat2013,size(images.landsat2013,1)*size(images.landsat2013,2),size(images.landsat2013,3));
-kmeans2013 = k_means(im2013_reshape,k,n_iter);
+kmeans2013_all = k_means(im2013_reshape,k,n_iter);
 figure('name', 'kmeans, all bands')
-imagesc(reshape(kmeans2013,size(images.landsat2013,1),size(images.landsat2013,2)));
+imagesc(reshape(kmeans2013_all,size(images.landsat2013,1),size(images.landsat2013,2)));
 title('k_means 2013');
 axis equal tight
 xlabel('x')
@@ -167,3 +196,34 @@ title('k_means 2018');
 axis equal tight
 xlabel('x')
 ylabel('y')
+
+%% (K-means illustration)
+
+figure('name', 'K-means illustration')
+subplot(221)
+imagesc(reshape(kmeans2013,size(gh2013,1),size(gh2013,2)));
+title('2013');
+axis equal tight
+xlabel('x in pixels (30m)')
+ylabel('y in pixels (30m)')
+
+subplot(222)
+imagesc(reshape(kmeans2018,size(gh2018,1),size(gh2018,2)));
+title('2018');
+axis equal tight
+xlabel('x in pixels (30m)')
+ylabel('y in pixels (30m)')
+
+subplot(223)
+imagesc(reshape(kmeans2013_all,size(images.landsat2013,1),size(images.landsat2013,2)));
+title('2013, all bands');
+axis equal tight
+xlabel('x in pixels (30m)')
+ylabel('y in pixels (30m)')
+
+subplot(224)
+imagesc(reshape(kmeansDiff,size(landsatDiff1318,1),size(landsatDiff1318,2)));
+title('Extracted difference');
+axis equal tight
+xlabel('x in pixels (30m)')
+ylabel('y in pixels (30m)')
