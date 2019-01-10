@@ -107,65 +107,23 @@ for i = 1:8
     images.landsat2013s(:,:,i) = im2double(ima1);
 end
 
-% LANDSAT 8 2018 11 06
+% LANDSAT 8 2015 12 16
 
-filepath{1} = '../Data/Small/2018-11-06, Landsat 8 USGS, B01.tiff';
-filepath{2} = '../Data/Small/2018-11-06, Landsat 8 USGS, B02.tiff';
-filepath{3} = '../Data/Small/2018-11-06, Landsat 8 USGS, B03.tiff';
-filepath{4} = '../Data/Small/2018-11-06, Landsat 8 USGS, B04.tiff';
-filepath{5} = '../Data/Small/2018-11-06, Landsat 8 USGS, B05.tiff';
-filepath{6} = '../Data/Small/2018-11-06, Landsat 8 USGS, B06.tiff';
-filepath{7} = '../Data/Small/2018-11-06, Landsat 8 USGS, B07.tiff';
-filepath{8} = '../Data/Small/2018-11-06, Landsat 8 USGS, B08.tiff';
+filepath{1} = '../Data/Small/2015-12-16, Landsat 8 USGS, B01.tiff';
+filepath{2} = '../Data/Small/2015-12-16, Landsat 8 USGS, B02.tiff';
+filepath{3} = '../Data/Small/2015-12-16, Landsat 8 USGS, B03.tiff';
+filepath{4} = '../Data/Small/2015-12-16, Landsat 8 USGS, B04.tiff';
+filepath{5} = '../Data/Small/2015-12-16, Landsat 8 USGS, B05.tiff';
+filepath{6} = '../Data/Small/2015-12-16, Landsat 8 USGS, B06.tiff';
+filepath{7} = '../Data/Small/2015-12-16, Landsat 8 USGS, B07.tiff';
+filepath{8} = '../Data/Small/2015-12-16, Landsat 8 USGS, B08.tiff';
 
 for i = 1:8
     [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
     % To double
-    images.landsat2018s(:,:,i) = im2double(ima1);
+    images.landsat2015(:,:,i) = im2double(ima1);
 end
 
-% Sentinel-2A L1C 2015 12 03
 
-% read Sentinel 12 bands
-% bands description: https://en.wikipedia.org/wiki/Sentinel-2
-filepath{1} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B01.tiff';
-filepath{2} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B02.tiff';
-filepath{3} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B03.tiff';
-filepath{4} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B04.tiff';
-filepath{5} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B05.tiff';
-filepath{6} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B06.tiff';
-filepath{7} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B07.tiff';
-filepath{8} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B08.tiff';
-filepath{9} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B8A.tiff';
-filepath{10} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B09.tiff';
-filepath{11} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B11.tiff';
-filepath{12} = '../Data/Small/2015-12-03, Sentinel-2A L1C, B12.tiff';
-
-for i = 1:12
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
-    % To double
-    images.sentinel2015s(:,:,i) = im2double(ima1);
-end
-
-% Sentinel-2A L1C 2018 11 07
-
-filepath{1} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B01.tiff';
-filepath{2} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B02.tiff';
-filepath{3} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B03.tiff';
-filepath{4} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B04.tiff';
-filepath{5} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B05.tiff';
-filepath{6} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B06.tiff';
-filepath{7} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B07.tiff';
-filepath{8} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B08.tiff';
-filepath{9} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B8A.tiff';
-filepath{10} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B09.tiff';
-filepath{11} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B11.tiff';
-filepath{12} = '../Data/Small/2018-11-07, Sentinel-2A L1C, B12.tiff';
-
-for i = 1:12
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
-    % To double
-    images.sentinel2018s(:,:,i) = im2double(ima1);
-end
 end
 
