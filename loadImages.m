@@ -1,5 +1,5 @@
 function [images] = loadImages()
-% Load all images bands and store them inside images
+% Load all images bands and store them inside "images"
 
 %% Bigger images
 
@@ -18,9 +18,9 @@ filepath{7} = '../Data/2013-10-07, Landsat 8 USGS, B07.tiff';
 filepath{8} = '../Data/2013-10-07, Landsat 8 USGS, B08.tiff';
 
 for i = 1:8
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
+    [ima, ~, ~, ~] = geotiffread(filepath{i});
     % To double
-    images.landsat2013_big(:,:,i) = im2double(ima1);
+    images.landsat2013_big(:,:,i) = im2double(ima);
 end
 
 % LANDSAT 8 2018 11 06
@@ -35,9 +35,9 @@ filepath{7} = '../Data/2018-11-06, Landsat 8 USGS, B07.tiff';
 filepath{8} = '../Data/2018-11-06, Landsat 8 USGS, B08.tiff';
 
 for i = 1:8
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
+    [ima, ~, ~, ~] = geotiffread(filepath{i});
     % To double
-    images.landsat2018_big(:,:,i) = im2double(ima1);
+    images.landsat2018_big(:,:,i) = im2double(ima);
 end
 
 % Sentinel-2A L1C 2015 12 03
@@ -58,9 +58,9 @@ filepath{11} = '../Data/2015-12-03, Sentinel-2A L1C, B11.tiff';
 filepath{12} = '../Data/2015-12-03, Sentinel-2A L1C, B12.tiff';
 
 for i = 1:12
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
+    [ima, ~, ~, ~] = geotiffread(filepath{i});
     % To double
-    images.sentinel2015_big(:,:,i) = im2double(ima1);
+    images.sentinel2015_big(:,:,i) = im2double(ima);
 end
 
 % Sentinel-2A L1C 2018 11 07
@@ -79,9 +79,9 @@ filepath{11} = '../Data/2018-11-07, Sentinel-2A L1C, B11.tiff';
 filepath{12} = '../Data/2018-11-07, Sentinel-2A L1C, B12.tiff';
 
 for i = 1:12
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
+    [ima, ~, ~, ~] = geotiffread(filepath{i});
     % To double
-    images.sentinel2018_big(:,:,i) = im2double(ima1);
+    images.sentinel2018_big(:,:,i) = im2double(ima);
 end
 
 %% Smaller images
@@ -89,9 +89,6 @@ end
 
 % LANDSAT 8 2013 10 07
 
-% read Landsat 8 bands (12 bands, 1 to 9 multispectral 30m, 
-% except 8 panchromatic at 15m, 10&11 TIR bands, 12 QA band)
-% bands description: https://landsat.usgs.gov/what-are-band-designations-landsat-satellites
 filepath{1} = '../Data/Small/2013-10-07, Landsat 8 USGS, B01.tiff';
 filepath{2} = '../Data/Small/2013-10-07, Landsat 8 USGS, B02.tiff';
 filepath{3} = '../Data/Small/2013-10-07, Landsat 8 USGS, B03.tiff';
@@ -102,9 +99,9 @@ filepath{7} = '../Data/Small/2013-10-07, Landsat 8 USGS, B07.tiff';
 filepath{8} = '../Data/Small/2013-10-07, Landsat 8 USGS, B08.tiff';
 
 for i = 1:8
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
+    [ima, ~, ~, ~] = geotiffread(filepath{i});
     % To double
-    images.landsat2013(:,:,i) = im2double(ima1);
+    images.landsat2013(:,:,i) = im2double(ima);
 end
 
 % LANDSAT 8 2015 12 16
@@ -119,9 +116,9 @@ filepath{7} = '../Data/Small/2015-12-16, Landsat 8 USGS, B07.tiff';
 filepath{8} = '../Data/Small/2015-12-16, Landsat 8 USGS, B08.tiff';
 
 for i = 1:8
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
+    [ima, ~, ~, ~] = geotiffread(filepath{i});
     % To double
-    images.landsat2015(:,:,i) = im2double(ima1);
+    images.landsat2015(:,:,i) = im2double(ima);
 end
 
 % LANDSAT 8 2018 11 06
@@ -136,9 +133,9 @@ filepath{7} = '../Data/Small/2018-11-06, Landsat 8 USGS, B07.tiff';
 filepath{8} = '../Data/Small/2018-11-06, Landsat 8 USGS, B08.tiff';
 
 for i = 1:8
-    [ima1, cmap1, refmat1, bbox1] = geotiffread(filepath{i});
+    [ima, ~, ~, ~] = geotiffread(filepath{i});
     % To double
-    images.landsat2018(:,:,i) = im2double(ima1);
+    images.landsat2018(:,:,i) = im2double(ima);
 end
 end
 
